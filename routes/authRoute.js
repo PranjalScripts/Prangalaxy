@@ -1,6 +1,8 @@
 import express  from "express";
-import {registerController,loginController, testController, forgotPasswordController} from "../controllers/authController.js";
+import {registerController,loginController, testController, forgotPasswordController, updateProfileController, getAllOrdersController, orderStatusController, getOrdersController} from "../controllers/authController.js";
 import { isAdmin, requireSIgnIn } from "../middlewares/authMIddleware.js";
+import { get } from "mongoose";
+ 
 //import { isAdmin } from "../middlewares/authMIddleware.js";
 // router object
 const router = express.Router();
@@ -31,9 +33,28 @@ router.get('/admin-auth',requireSIgnIn,isAdmin,(req,res)=>{
 
 
 
+ //update profile
+
+ router.put('/profile',requireSIgnIn,updateProfileController);
 
 
+////orders
+router.get("/orders", requireSIgnIn, getOrdersController);
 
+
+ // all orders
+
+router.get('/all-orders',requireSIgnIn,isAdmin,getAllOrdersController);
+
+     
+ // order status update
+router.put(
+   "/order-status/:orderId",
+   requireSIgnIn,
+   isAdmin,
+   orderStatusController
+ );
+ 
 
 
 export default  router;
